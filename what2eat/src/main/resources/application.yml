@@ -1,0 +1,89 @@
+spring:
+  profiles:
+    include: local
+    group:
+      "local": "common, local_server"
+      "dev": "common, dev_server, dev_web_resource"
+---
+
+spring:
+  config:
+    activate:
+      on-profile: common
+  jpa:
+    show-sql: false
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  datasource:
+    url: jdbc:h2:mem:test
+  mvc:
+    throw-exception-if-no-handler-found: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dddyoshi7@gmail.com
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+#  main:
+#    allow-circular-references: true
+
+jwt:
+  token:
+    header: api_key
+    issuer: social_server
+    clientSecret: Rel3Bjce2MajBo09qgkNgYaTuzvJe8iwnBFhsDS5
+    expirySeconds: 0
+
+address: noreply@sdsfoodmate.co.kr
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local_server
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev_server
+
+server:
+  port: 80
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+jwt:
+  token:
+    header: api_key
+    issuer: social_server
+    clientSecret: Rel3Bjce2MajBo09qgkNgYaTuzvJe8iwnBFhsDS5
+    expirySeconds: 0
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev_web_resource
+  web:
+    resources:
+      static-locations: file:/home/ec2-user/front-end
